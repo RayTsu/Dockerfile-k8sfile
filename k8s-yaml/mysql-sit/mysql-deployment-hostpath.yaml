@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mysql
+  namespace: sit
+spec:
+  replicas: 1
+  selector:
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: abc123
+        image: 192.168.11.53:8082/mysql5.7
+        imagePullPolicy: IfNotPresent
+        name: mysql
+        ports:
+        - containerPort: 3306
+          hostPort: 3306
+          protocol: TCP
+        volumeMounts:
+          - name: mysql-mount
+            mountPath: /var/lib/mysql
+            readOnly: false
+          - name: mysql-conf
+            mountPath: /etc/mysql/mysql.conf.d
+            readOnly: false
+      volumes:
+        - name: mysql-mount
+          hostPath:
+            path: /app/mysql
+        - name: mysql-conf
+          configMap:
+            name: mysql-conf

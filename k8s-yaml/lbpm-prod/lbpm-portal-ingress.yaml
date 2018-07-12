@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: lbpm-portal-ingress
+  namespace: prod
+spec:
+  rules:
+  - host: test.lbpm-portal.com
+    http:
+      paths:
+      - backend:
+          serviceName: lbpm-portal-service-prod
+          servicePort: 8888
+        path: /

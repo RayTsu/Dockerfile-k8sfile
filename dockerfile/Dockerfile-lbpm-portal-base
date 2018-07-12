@@ -1,0 +1,12 @@
+#易贷前端基础镜像
+FROM 192.168.11.53:8082/centos7:T1
+MAINTAINER RayHsu
+WORKDIR /app
+ADD soft/jdk-8u151-linux-x64.tar.gz /usr/local/
+ENV JAVA8_HOME /usr/local/jdk1.8.0_151
+ENV JAVA_HOME /usr/local/jdk1.8
+RUN ln -s $JAVA8_HOME $JAVA_HOME && \
+    echo "Asia/Shanghai" > /etc/timezone && \
+    cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+ENV PATH $JAVA_HOME/bin:$PATH
+

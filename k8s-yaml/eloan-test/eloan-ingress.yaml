@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: eloan-ingress
+  namespace: prod
+spec:
+  rules:
+  - host: test.eloan-portal.com
+    http:
+      paths:
+      - backend:
+          serviceName: eloan-test-service
+          servicePort: 80
+        path: /

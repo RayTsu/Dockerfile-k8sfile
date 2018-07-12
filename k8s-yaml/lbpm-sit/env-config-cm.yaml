@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  env: FAT
+kind: ConfigMap
+metadata:
+  name: env-config
+  namespace: sit

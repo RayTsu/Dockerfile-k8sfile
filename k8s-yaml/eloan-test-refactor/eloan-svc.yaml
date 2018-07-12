@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: eloan-svc-refactor
+  namespace: dev
+spec:
+  ports:
+  - name: eloan-svc-refactor
+    nodePort: 32112
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: eloan-dev-refactor
+  type: NodePort

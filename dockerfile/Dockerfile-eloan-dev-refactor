@@ -1,0 +1,14 @@
+FROM 192.168.11.53:8082/tomcat:7.0.86-jre7-alpine
+MAINTAINER RayHsu
+WORKDIR /usr/local
+COPY msyhbd.ttf /usr/share/fonts/
+COPY msyh.ttf /usr/share/fonts/
+RUN rm -rf tomcat/webapps/* && \
+    mkdir -p /mfbmsDataFile/signaturesFile/eloan /home/tomcat/upload /home/tomcat/reportUpload /home/tomcat/invitationQrCodeUpload && \
+    sed -i '136a<Context debug="0" docBase="/mfbmsDataFile/signaturesFile/eloan/" path="/cpf" reloadable="false"/>' tomcat/conf/server.xml
+ADD eloan-refactor/eloan.war tomcat/webapps/
+ADD Shanghai ./
+RUN echo "Asia/Shanghai" > /etc/timezone && \
+    cp Shanghai /etc/localtime && \
+    mv tomcat/webapps/eloan.war  tomcat/webapps/ROOT.war
+CMD ["catalina.sh", "run"]

@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: mysql-prod
+  name: mysql-prod
+  namespace: prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-prod
+  template:
+    metadata:
+      labels:
+        app: mysql-prod
+    spec:
+      containers:
+      - env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: abc123
+        image: 192.168.11.53:8082/mysql-56-centos7:latest
+        imagePullPolicy: Always
+        name: mysql
+        ports:
+        - containerPort: 3306
+          hostPort: 3306
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: nfs
+      restartPolicy: Always
+      volumes:
+      - name: nfs
+        nfs:
+          path: /volume1/MySQL_Redis_Test
+          server: 192.168.3.64
+#mysql-56-centos7镜像支持nfs挂载，但是不能更改时区，顾可用镜像为192.168.11.53:8082/mysql5.7，弊端是不能支持nfs挂载，这是问题所在，根据业务需要最终选择后者^_^

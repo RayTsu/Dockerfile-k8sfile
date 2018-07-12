@@ -1,0 +1,42 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: rabbitmq-deployment-sit
+  namespace: sit
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: rabbitmq-sit
+    spec:
+      containers:
+      - env:
+        - name: RABBITMQ_ERLANG_COOKIE
+          valueFrom:
+            configMapKeyRef:
+              key: rabbitmq.erlang.cookie
+              name: rabbitmq-config
+        - name: RABBITMQ_DEFAULT_USER
+          valueFrom:
+            configMapKeyRef:
+              key: rabbitmq.default.user
+              name: rabbitmq-config
+        - name: RABBITMQ_DEFAULT_PASS
+          valueFrom:
+            configMapKeyRef:
+              key: rabbitmq.default.pass
+              name: rabbitmq-config
+        image: 192.168.11.53:8082/rabbitmq:3.7-management
+        imagePullPolicy: IfNotPresent
+        name: rabbitmq
+        ports:
+        - containerPort: 15672
+          hostPort: 15672
+          name: web-port
+          protocol: TCP
+        - containerPort: 5672
+          hostPort: 5672
+          name: back-port
+          protocol: TCP
+      restartPolicy: Always

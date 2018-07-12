@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  env: PRO
+kind: ConfigMap
+metadata:
+  name: env-config
+  namespace: prod

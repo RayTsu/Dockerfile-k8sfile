@@ -1,0 +1,4 @@
+#易贷前端业务镜像
+FROM 192.168.11.53:8082/lbpm-portal-base-img:T1
+MAINTAINER RayHsu
+ADD lbpm-portal.jar /app/

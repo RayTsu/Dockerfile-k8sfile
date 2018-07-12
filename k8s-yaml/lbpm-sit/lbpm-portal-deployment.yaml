@@ -1,0 +1,48 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: lbpm-portal
+  namespace: sit
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: lbpm-portal
+    spec:
+      containers:
+      - args:
+        - -c
+        - java -Denv=$ENV -Xmx512m -jar /app/lbpm-portal.jar
+        command:
+        - /bin/sh
+        env:
+        - name: ENV
+          valueFrom:
+            configMapKeyRef:
+              key: env
+              name: env-config
+        image: 192.168.11.53:8082/lbpm-portal-business-img:T24
+        imagePullPolicy: IfNotPresent
+        name: lbpm-portal
+        ports:
+        - containerPort: 8080
+          hostPort: 8888
+          name: web
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /opt/logs
+          name: lbpm-portal-log
+        - mountPath: /opt/attachment
+          name: lbpm-portal-attachment
+      restartPolicy: Always
+      nodeSelector:
+        lbpm: lbpm-sit
+      volumes:
+      - hostPath:
+          path: /app/logs/lbpm-portal-sit
+        name: lbpm-portal-log
+      - name: lbpm-portal-attachment
+        nfs:
+          path: /volume1/lbpm-portal/FAT/attachment
+          server: 192.168.3.64
