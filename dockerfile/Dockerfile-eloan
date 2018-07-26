@@ -1,9 +1,10 @@
 FROM 192.168.11.53:8082/tomcat:7.0.86-jre7-alpine
 MAINTAINER RayHsu
+ARG CONT_ENV
 WORKDIR /usr/local
 COPY msyhbd.ttf /usr/share/fonts/
 COPY msyh.ttf /usr/share/fonts/
-COPY context.xml tomcat/conf/
+COPY context-$CONT_ENV.xml tomcat/conf/context.xml
 RUN rm -rf tomcat/webapps/* && \
     mkdir -p /mfbmsDataFile/signaturesFile/eloan /home/tomcat/upload /home/tomcat/reportUpload /home/tomcat/invitationQrCodeUpload && \
     sed -i '136a<Context debug="0" docBase="/mfbmsDataFile/signaturesFile/eloan/" path="/cpf" reloadable="false"/>' tomcat/conf/server.xml

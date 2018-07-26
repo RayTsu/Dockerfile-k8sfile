@@ -16,7 +16,7 @@ spec:
         app: redis-prod
     spec:
       containers:
-      - image: 192.168.11.53:8082/redis
+      - image: 192.168.11.53:8082/redis-prod
         imagePullPolicy: Always
         name: redis
         ports:

@@ -4,7 +4,6 @@ metadata:
   name: redis-prod
   namespace: prod
 spec:
-  clusterIP: 10.254.11.15
   ports:
   - name: redis
     nodePort: 31009
