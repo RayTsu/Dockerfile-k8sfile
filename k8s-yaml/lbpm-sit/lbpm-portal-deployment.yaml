@@ -35,6 +35,8 @@ spec:
           name: lbpm-portal-log
         - mountPath: /opt/attachment
           name: lbpm-portal-attachment
+        - mountPath: /mfbmsDataFile/signaturesFile/eloan
+          name: lbpm-signatures
       restartPolicy: Always
       nodeSelector:
         lbpm: lbpm-sit
@@ -46,3 +48,7 @@ spec:
         nfs:
           path: /volume1/lbpm-portal/FAT/attachment
           server: 192.168.3.64
+      - name: lbpm-signatures
+        nfs:
+          path: /volume1/testdatafile/signaturesFile/eloan
+          server: 192.168.3.34

@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: qualify
+  namespace: sit
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: qualify
+    spec:
+      containers:
+      - image: 192.168.11.53:8082/risk-qualify-img-test:latest
+        imagePullPolicy: IfNotPresent
+        name: qualify
+        ports:
+        - containerPort: 8899
+          hostPort: 8899
+        volumeMounts:
+        - mountPath: /opt/risk/service/risk-qualify/logs
+          name: qualify-log
+      restartPolicy: Always
+      volumes:
+      - hostPath:
+          path: /app/logs/risk-sit/risk-qualify
+        name: qualify-log

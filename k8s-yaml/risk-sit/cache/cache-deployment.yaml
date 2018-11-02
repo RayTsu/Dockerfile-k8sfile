@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: cache
+  namespace: sit
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cache
+    spec:
+      containers:
+      - image: 192.168.11.53:8082/risk-cache-img-test:latest
+        imagePullPolicy: IfNotPresent
+        name: cache
+        ports:
+        - containerPort: 8821
+          hostPort: 8821
+        volumeMounts:
+        - mountPath: /opt/risk/service/risk-cache/logs
+          name: cache-log
+      restartPolicy: Always
+      volumes:
+      - hostPath:
+          path: /app/logs/risk-sit/risk-cache
+        name: cache-log

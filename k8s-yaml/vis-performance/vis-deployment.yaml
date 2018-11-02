@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: vis-perf
+  namespace: performance
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: vis-perf
+    spec:
+      containers:
+      - image: 192.168.11.53:8082/vis-performance:1.0-SNAPSHOT
+        imagePullPolicy: IfNotPresent
+        name: vis-perf
+        ports:
+        - containerPort: 8083
+          hostPort: 8083
+        volumeMounts:
+        - mountPath: /home/apps/vis/logs
+          name: vis-log
+      restartPolicy: Always
+      nodeSelector:
+        vis: vis-perf
+      volumes:
+      - hostPath:
+          path: /app/logs/vis-perf
+        name: vis-log

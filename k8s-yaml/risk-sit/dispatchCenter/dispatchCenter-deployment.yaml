@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: dispatch-center
+  namespace: sit
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: dispatch-center
+    spec:
+      containers:
+      - image: 192.168.11.53:8082/risk-dispatch-center-img-test:latest
+        imagePullPolicy: IfNotPresent
+        name: dispatch-center
+        ports:
+        - containerPort: 8818
+          hostPort: 8818
+        volumeMounts:
+        - mountPath: /opt/risk/service/risk-dispatchCenter/logs
+          name: dispatch-center-log
+      restartPolicy: Always
+      volumes:
+      - hostPath:
+          path: /app/logs/risk-sit/risk-dispatchCenter
+        name: dispatch-center-log

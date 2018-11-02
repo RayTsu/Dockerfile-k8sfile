@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: data-collection-container
+  namespace: sit
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: data-collection-container
+    spec:
+      containers:
+      - image: 192.168.11.53:8082/risk-data-collection-container-img-test:latest
+        imagePullPolicy: IfNotPresent
+        name: data-collection-container
+        ports:
+        - containerPort: 6601
+          hostPort: 6601
+        volumeMounts:
+        - mountPath: /opt/risk/service/risk-data-collection-container/logs
+          name: data-collection-container-log
+      restartPolicy: Always
+      volumes:
+      - hostPath:
+          path: /app/logs/risk-sit/risk-data-collection-container
+        name: data-collection-container-log

@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: job
+  namespace: sit
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: job
+    spec:
+      containers:
+      - image: 192.168.11.53:8082/risk-job-img-test:latest
+        imagePullPolicy: IfNotPresent
+        name: job
+        ports:
+        - containerPort: 8820
+          hostPort: 8820
+        volumeMounts:
+        - mountPath: /opt/risk/service/risk-job/logs
+          name: job-log
+      restartPolicy: Always
+      volumes:
+      - hostPath:
+          path: /app/logs/risk-sit/risk-job
+        name: job-log

@@ -1,0 +1,60 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: eloan-perf
+  namespace: performance
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: eloan-perf
+    spec:
+      containers:
+      - image: 192.168.11.53:8082/eloan-performance:2.1.0
+        imagePullPolicy: IfNotPresent
+        name: eloan-perf
+        ports:
+        - containerPort: 8080
+          hostPort: 8899
+          name: eloan-perf
+          protocol: TCP
+        - containerPort: 7091
+          hostPort: 7091
+          name: eloan-jmxremote
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /usr/local/tomcat/logs
+          name: eloan-portal-performance-log
+        - mountPath: /mfbmsDataFile/signaturesFile/eloan
+          name: eloan-signatures
+        - mountPath: /home/tomcat/upload
+          name: eloan-upload
+        - mountPath: /home/tomcat/reportUpload
+          name: eloan-reportupload
+        - mountPath: /home/tomcat/invitationQrCodeUpload
+          name: eloan-invitationqrcodeupload
+      restartPolicy: Always
+      nodeSelector:
+        eloan: eloan-perf
+      volumes:
+      - hostPath:
+          path: /app/logs/eloan-portal-performance
+        name: eloan-portal-performance-log
+      - name: eloan-signatures
+        nfs:
+          path: /volume1/eloan-performance-signaturesFile
+          server: 192.168.3.64
+      - name: eloan-upload
+        nfs:
+          path: /volume1/eloan-attachment-performance/upload
+          server: 192.168.3.64
+      - name: eloan-reportupload
+        nfs:
+          path: /volume1/eloan-attachment-performance/reportUpload
+          server: 192.168.3.64
+      - name: eloan-invitationqrcodeupload
+        nfs:
+          path: /volume1/eloan-attachment-performance/invitationQrCodeUpload
+          server: 192.168.3.64
+#  containers.name no more than 15 characters

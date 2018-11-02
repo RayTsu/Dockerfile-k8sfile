@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: eloan-svc
+  namespace: performance
+spec:
+  ports:
+  - name: eloan-svc
+    nodePort: 31123
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: eloan-perf
+  type: NodePort

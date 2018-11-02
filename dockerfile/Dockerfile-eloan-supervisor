@@ -1,0 +1,19 @@
+FROM 192.168.11.53:8082/tomcat7-jdk7
+MAINTAINER RayHsu
+ARG CONT_ENV
+WORKDIR /usr/local
+COPY msyhbd.ttf /usr/share/fonts/
+COPY msyh.ttf /usr/share/fonts/
+COPY context-$CONT_ENV.xml tomcat/conf/context.xml
+RUN rm -rf tomcat/webapps/* && \
+    mkdir -p /mfbmsDataFile/signaturesFile/eloan /home/tomcat/upload /home/tomcat/reportUpload /home/tomcat/invitationQrCodeUpload && \
+    sed -i '136a<Context debug="0" docBase="/mfbmsDataFile/signaturesFile/eloan/" path="/cpf" reloadable="false"/>' tomcat/conf/server.xml
+ADD eloan.war tomcat/webapps/
+ADD tomcat-lib/commons-pool2-2.4.2.jar tomcat/lib/
+ADD tomcat-lib/jedis-2.8.1-SNAPSHOT.jar tomcat/lib/
+ADD tomcat-lib/tomcat-redis-session-manager-2.0.0.jar tomcat/lib/
+RUN mv tomcat/webapps/eloan.war  tomcat/webapps/ROOT.war && \
+    yum install -y epel-release && \
+    yum install -y supervisor
+ADD supervisord.conf /etc/supervisord.conf
+ENTRYPOINT ["/usr/bin/supervisord" , "-c" , "/etc/supervisord.conf"]

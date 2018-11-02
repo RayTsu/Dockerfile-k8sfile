@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: redis-risk
+  namespace: sit
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: redis-risk
+    spec:
+      containers:
+      - image: 192.168.11.53:8082/redis-encryption
+        imagePullPolicy: Always
+        name: redis-risk
+        ports:
+        - containerPort: 6379
+          hostPort: 6379
+          protocol: TCP
+      restartPolicy: Always

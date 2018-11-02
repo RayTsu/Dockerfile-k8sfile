@@ -1,10 +1,13 @@
-FROM 192.168.11.53:8082/tomcat:7.0.86-jre7-alpine
+FROM 192.168.11.53:8082/tomcat7-jdk7
 MAINTAINER RayHsu
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
 ARG CONT_ENV
-WORKDIR /usr/local
 COPY msyhbd.ttf /usr/share/fonts/
 COPY msyh.ttf /usr/share/fonts/
 COPY context-$CONT_ENV.xml tomcat/conf/context.xml
+COPY catalina.sh tomcat/bin/catalina.sh
 RUN rm -rf tomcat/webapps/* && \
     mkdir -p /mfbmsDataFile/signaturesFile/eloan /home/tomcat/upload /home/tomcat/reportUpload /home/tomcat/invitationQrCodeUpload && \
     sed -i '136a<Context debug="0" docBase="/mfbmsDataFile/signaturesFile/eloan/" path="/cpf" reloadable="false"/>' tomcat/conf/server.xml && \
@@ -13,11 +16,8 @@ RUN rm -rf tomcat/webapps/* && \
     sed -i 's/maxThreads="150"/maxThreads="400"/' tomcat/conf/server.xml && \
     sed -i 's/minSpareThreads="4"/minSpareThreads="50"/' tomcat/conf/server.xml
 ADD eloan.war tomcat/webapps/
-ADD Shanghai ./
 ADD tomcat-lib/commons-pool2-2.4.2.jar tomcat/lib/
 ADD tomcat-lib/jedis-2.8.1-SNAPSHOT.jar tomcat/lib/
 ADD tomcat-lib/tomcat-redis-session-manager-2.0.0.jar tomcat/lib/
-RUN echo "Asia/Shanghai" > /etc/timezone && \
-    cp Shanghai /etc/localtime && \
-    mv tomcat/webapps/eloan.war  tomcat/webapps/ROOT.war
-CMD ["catalina.sh", "run"]
+RUN mv tomcat/webapps/eloan.war  tomcat/webapps/ROOT.war
+CMD ["tomcat/bin/catalina.sh", "run"]

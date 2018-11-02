@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: model-score
+  namespace: sit
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: model-score
+    spec:
+      containers:
+      - image: 192.168.11.53:8082/risk-model-score-img-test:latest
+        imagePullPolicy: IfNotPresent
+        name: model-score
+        ports:
+        - containerPort: 8825
+          hostPort: 8825
+        volumeMounts:
+        - mountPath: /opt/risk/service/risk-modelScore/logs
+          name: model-score-log
+      restartPolicy: Always
+      volumes:
+      - hostPath:
+          path: /app/logs/risk-sit/risk-modelScore
+        name: model-score-log

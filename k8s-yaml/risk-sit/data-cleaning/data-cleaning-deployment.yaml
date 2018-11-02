@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: data-cleaning
+  namespace: sit
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: data-cleaning
+    spec:
+      containers:
+      - image: 192.168.11.53:8082/risk-data-cleaning-img-test:latest
+        imagePullPolicy: IfNotPresent
+        name: data-cleaning
+        ports:
+        - containerPort: 7701
+          hostPort: 7701
+        volumeMounts:
+        - mountPath: /opt/risk/service/risk-data-cleaning/logs
+          name: data-cleaning-log
+      restartPolicy: Always
+      volumes:
+      - hostPath:
+          path: /app/logs/risk-sit/risk-data-cleaning
+        name: data-cleaning-log

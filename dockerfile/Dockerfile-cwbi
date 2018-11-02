@@ -1,0 +1,13 @@
+FROM 192.168.11.53:8082/tomcat7-jdk7
+MAINTAINER RayHsu
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+ARG CONT_ENV
+RUN rm -rf tomcat/webapps/* && \
+    yum install unzip -y
+ADD cwbi-web.war tomcat/webapps/
+RUN unzip tomcat/webapps/cwbi-web.war -d  tomcat/webapps/ROOT/
+COPY config.properties tomcat/webapps/ROOT/WEB-INF/classes/
+COPY log4j.properties tomcat/webapps/ROOT/WEB-INF/classes/
+CMD ["tomcat/bin/catalina.sh", "run"]

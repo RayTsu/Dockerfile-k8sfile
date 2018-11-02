@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: data-collection-container
+  name: data-collection-container
+  namespace: sit
+spec:
+  ports:
+  - port: 6601
+    protocol: TCP
+    targetPort: 6601
+  selector:
+    app: data-collection-container
+  type: ClusterIP

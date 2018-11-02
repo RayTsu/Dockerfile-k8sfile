@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: cwbi-portal
+  namespace: sit
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cwbi-portal
+    spec:
+      containers:
+      - image: 192.168.11.53:8082/cwbi-web-sit:0.0.1-SNAPSHOT
+        imagePullPolicy: IfNotPresent
+        name: cwbi-portal
+        ports:
+        - containerPort: 8080
+          hostPort: 8181
+        volumeMounts:
+        - mountPath: /usr/local/tomcat/logs
+          name: cwbi-portal-log
+      restartPolicy: Always
+      nodeSelector:
+        cwbi: cwbi-sit
+      volumes:
+      - hostPath:
+          path: /app/logs/cwbi-sit
+        name: cwbi-portal-log

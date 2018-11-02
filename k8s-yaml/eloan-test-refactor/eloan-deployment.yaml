@@ -17,7 +17,7 @@ spec:
         ports:
         - containerPort: 8080
           hostPort: 9999
-          name: eloan-refactor
+          name: eloan-dev-refactor
           protocol: TCP
         volumeMounts:
         - mountPath: /usr/local/tomcat/logs

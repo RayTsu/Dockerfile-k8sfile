@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: data-data-service
+  namespace: sit
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: data-data-service
+    spec:
+      containers:
+      - image: 192.168.11.53:8082/risk-data-data-service-img-test:latest
+        imagePullPolicy: IfNotPresent
+        name: data-data-service
+        ports:
+        - containerPort: 9901
+          hostPort: 9901
+        volumeMounts:
+        - mountPath: /opt/risk/service/risk-data-dataService/logs
+          name: data-data-service-log
+      restartPolicy: Always
+      volumes:
+      - hostPath:
+          path: /app/logs/risk-sit/risk-data-dataService
+        name: data-data-service-log

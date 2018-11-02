@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: data-model-treating
+  namespace: sit
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: data-model-treating
+    spec:
+      containers:
+      - image: 192.168.11.53:8082/risk-data-model-treating-img-test:latest
+        imagePullPolicy: IfNotPresent
+        name: data-model-treating
+        ports:
+        - containerPort: 5501
+          hostPort: 5501
+        volumeMounts:
+        - mountPath: /opt/risk/service/risk-data-modelTreating/logs
+          name: data-model-treating-log
+      restartPolicy: Always
+      volumes:
+      - hostPath:
+          path: /app/logs/risk-sit/risk-data-modelTreating
+        name: data-model-treating-log

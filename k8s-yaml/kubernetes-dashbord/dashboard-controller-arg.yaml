@@ -28,6 +28,8 @@ spec:
         ports:
         - containerPort: 9090
           protocol: TCP
+        args:
+          - --apiserver-host=http://k8s-master-ip:8080
         resources:
           limits:
             cpu: 100m

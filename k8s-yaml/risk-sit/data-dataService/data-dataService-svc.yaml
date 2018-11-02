@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: data-data-service
+  name: data-data-service
+  namespace: sit
+spec:
+  ports:
+  - port: 9901
+    protocol: TCP
+    targetPort: 9901
+  selector:
+    app: data-data-service
+  type: ClusterIP
