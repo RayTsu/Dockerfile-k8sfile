@@ -1,14 +1,14 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: lbpm-portal-ingress
+  name: eloan-ingress
   namespace: prod
 spec:
   rules:
-  - host: prod.lbpm-portal.com
+  - host: prod.eloan-portal-refactor.com
     http:
       paths:
       - backend:
-          serviceName: lbpm-portal-service
-          servicePort: 8888
+          serviceName: eloan-svc-refactor
+          servicePort: 80
         path: /

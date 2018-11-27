@@ -57,4 +57,4 @@ spec:
         nfs:
           path: /volume1/eloan-attachment-performance/invitationQrCodeUpload
           server: 192.168.3.64
-#  containers.name no more than 15 characters
+#  containers.ports.name no more than 15 characters

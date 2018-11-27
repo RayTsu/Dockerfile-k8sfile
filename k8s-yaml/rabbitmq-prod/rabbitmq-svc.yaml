@@ -6,18 +6,15 @@ metadata:
   name: rabbitmq-service-prod
   namespace: prod
 spec:
-  clusterIP: 10.254.11.16
   ports:
   - name: tcp
-    nodePort: 31801
     port: 5672
     protocol: TCP
     targetPort: 5672
   - name: http
-    nodePort: 31802
     port: 15672
     protocol: TCP
     targetPort: 15672
   selector:
     app: rabbitmq-prod
-  type: NodePort
+  type: ClusterIP

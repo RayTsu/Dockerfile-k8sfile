@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: traefik-ingress
+  namespace: prod
+spec:
+  rules:
+  - host: prod.eloan-portal-refactor.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: eloan-svc-refactor
+          servicePort: 80
+  - host: prod.lbpm-portal.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: lbpm-portal-service
+          servicePort: 8888

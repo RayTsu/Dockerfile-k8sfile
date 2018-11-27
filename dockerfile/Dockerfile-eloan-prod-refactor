@@ -1,0 +1,15 @@
+FROM 192.168.11.53:8082/tomcat7-jdk7
+MAINTAINER RayHsu
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+WORKDIR /usr/local
+COPY msyhbd.ttf /usr/share/fonts/
+COPY msyh.ttf /usr/share/fonts/
+COPY catalina-ref.sh tomcat/bin/catalina.sh
+RUN rm -rf tomcat/webapps/* && \
+    mkdir -p /mfbmsDataFile/signaturesFile/eloan /home/tomcat/upload /home/tomcat/reportUpload /home/tomcat/invitationQrCodeUpload && \
+    sed -i '136a<Context debug="0" docBase="/mfbmsDataFile/signaturesFile/eloan/" path="/cpf" reloadable="false"/>' tomcat/conf/server.xml
+ADD eloan.war tomcat/webapps/
+RUN mv tomcat/webapps/eloan.war  tomcat/webapps/ROOT.war
+CMD ["tomcat/bin/catalina.sh", "run"]

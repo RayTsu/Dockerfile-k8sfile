@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: eloan-svc-refactor
+  namespace: prod
+  annotations:
+    traefik.ingress.kubernetes.io/affinity: "true"
+    traefik.ingress.kubernetes.io/session-cookie-name: "eloan-refactor"
+spec:
+  ports:
+  - name: eloan-svc-refactor
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: eloan-prod-refactor
+  type: ClusterIP
+#加上注解解决当部署多台机器采用了域名访问时的session过期的问题
